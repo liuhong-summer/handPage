@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="page.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/hand-paging.js"></script>
+</head>
+<body>
+<div class="contain">
+    <ul id="list">
+
+    </ul>
+    <div id="pagingTest"></div>
+    <input type="hidden" value="" id="page">
+</div>
+<script type="text/javascript">
+
+   $(function () {
+       function  ajaxData(pageNo) {
+           $.ajax({
+               url:"js/table.json",
+               success:function(data){
+                   var dataList = data.list;
+                   $("#list").html("");
+                   dataList.map(function(v){
+                       var li = "<li>"+v.name+"</li>";
+                       $("#list").append(li);
+                   });
+                   $("#pagingTest").paging1({
+                       pageNo:pageNo,
+                       totalPage:data.totalPage
+                   })
+               }
+           });
+       }
+       $(document).on("click","a",function () {
+           var val = $("#page").val();
+           ajaxData(val);
+       });
+       ajaxData(1);
+   })
+
+</script>
+</body>
+</html>
